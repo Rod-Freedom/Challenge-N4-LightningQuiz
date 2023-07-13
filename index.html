@@ -12,11 +12,67 @@
 
 <body>
     <header>
+        <div class="credits">
+            <p>LIGHTNING QUIZ – BY ROD</p>
+        </div>
+        
         <div class="topheader">
-            <p class="scores">HIGHSCORES</p>
-            <h1 class="title">LIGHTNING&nbsp;<span>⚡️</span>&nbsp;QUIZ</h1>
-            <p class="timer">TIME:&nbsp;<span class="time"></span></p>
+            <div class="title">
+                <h1 class="title left">LIGHTNING</h1>
+                <div class="lightning" alt="lightning bolt no-background"></div>
+                <h1 class="title right">QUIZ</h1>
+            </div>
+        </div>
+        
+        <div class="secheader">
+            <a class="highscores">HIGHSCORES</a>
+            <p class="timer hidden">TIME:&nbsp;<span class="time"></span></p>
         </div>
     </header>
+
+    <div class="welcome">
+        <h2 class="ready">GET READY!</h2>
+        <p class="intro">Put your coding knowledge to test. Answer as fast as you can: each question you answer will give you bonus seconds on the timer.</p>
+        <p class="intro">Let's see what you're made of!</p>
+        <p class="intro label">PLAY AS:</p>
+        <input type="text" id="userName" name="name" placeholder="Player" required minlength="1" maxlength="8" size="10">
+        <p class="alert hidden">YOU NEED A PLAYER NAME!</p>
+        <button class="btn" id="startBtn">LET'S GO!</button>
+    </div>
+    
+    <div class="hsBox hide">
+        <h1 class="hsTitle">TOP 10 SCORES</h1>
+        <button class="btn" id="resetHSBtn">RESET HIGHSCORES</button>
+    </div>
+
+    <div class="scoreBox hide">
+        <p class="score">SCORE:&nbsp;<span class="scoreNum"></span></p>
+        <p class="score scoreSum hide"></p>
+    </div>
+
+    <div class="quizone hide">
+        <div class="question-box">
+            <h2 class="question"></h2>
+            <div class="answers">
+                <div class="aCombo"><button class="answer active" data-truth=""></button><p class="bonus hidden">+5s</p></div>
+                <div class="aCombo"><button class="answer active" data-truth=""></button><p class="bonus hidden">+5s</p></div>
+                <div class="aCombo"><button class="answer active" data-truth=""></button><p class="bonus hidden">+5s</p></div>
+                <div class="aCombo"><button class="answer active" data-truth=""></button><p class="bonus hidden">+5s</p></div>
+            </div>
+
+            <p class="confirmTrue hide">WELL DONE!</p>
+            <p class="confirmFalse hide">WRONG!</p>
+        </div>
+    </div>
+
+    <div class="timesUp hide">TIME'S UP!</div>
+
+    <div class="finish hide">
+        <h2 class="gameOver">QUIZ OVER!</h2>
+        <p class="farewell">That was fun, right?</p>
+        <p class="stats">SCORE:&nbsp;<span class="newScore"></span></p>
+        <p class="newHS hide">¡NEW HIGHSCORE!</p>
+        <button class="btn" id="finishBtn">GO AGAIN!</button>
+    </div>
 </body>
 </html>
