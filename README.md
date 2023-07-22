@@ -49,7 +49,7 @@ as soon as you click begin, you're against the clock, so be quick and star answe
 
 [Test your knowledge in coding now!](https://rod-freedom.github.io/Challenge-N4-LightningQuiz/)
 
-![Rod's Password Generator](./Images/QuizPreview.GIF)
+![Rod's Password Generator](./assets/Images/QuizPreview.GIF)
 
 ## **CREDITS**
 
