@@ -61,7 +61,7 @@ body {
 }
 
 .lightning {
-    background-image: url(./Images/lightning-icon.png);
+    background-image: url(../assets/Images/lightning-icon.png);
     background-size: cover;
     width: 3.6vh;
     height: 6.7372vh;
