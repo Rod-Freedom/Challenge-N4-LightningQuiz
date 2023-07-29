@@ -21,9 +21,10 @@ const hsLink = document.querySelector(".highscores");
 const hsBox = document.querySelector(".hsBox");
 const resetHSBtn = document.querySelector("#resetHSBtn")
 const newHSmsg = document.querySelector(".newHS")
+let hsList = "";
 
 // The following are the parameter and rules of the game. Both the timer and question length of the game are declared here.
-// The other lets are esencial for the functionality of the game, and not meant to be edited. 
+// The other lets are essential for the functionality of the game, and not meant to be edited. 
 let timeLeft = 10; // Editable.
 timer.innerHTML = timeLeft.toFixed(2);
 let questNum = 0;
@@ -32,10 +33,10 @@ scoreNum.innerHTML = score;
 let quizLength = 10; // Editable.
 let bonusBase = 0;
 let playerName = "";
-// This first highscore is declared before any function of the code, so that ROD's highscore acts as a benchmark for new players.  
+// This first highscore is declared before any function of the code so that ROD's highscore acts as a benchmark for new players.  
 let highScores = [{ p: "ROD", s: 20000 }]; // Editable.
 
-// The following array is the for the Q&As of the game.
+// The following array is for the Q&As of the game.
 const QandAs = [
     {
         q: "Arrays in JavaScript can be used to store _____.",
@@ -225,7 +226,7 @@ const QandAs = [
 ];
 
 // The following func, is to set the first highscore in the local storage (ROD's highscore).
-// If the local storage is already full, it will udate the existent local highscores in the code.
+// If the local storage is already full, it will update the existent local highscores in the code.
 const getHS = () => {
     if (localStorage.getItem("highscores") === null) {
         localStorage.setItem("highscores", JSON.stringify(highScores));
@@ -239,37 +240,40 @@ const getHS = () => {
 // This func, renders the highscores on the highscores section.
 const renderHS = () => {
     highScores.splice(10);
+    hsList = document.createElement("div");
+    hsList.setAttribute("id", "hsList");
+    hsBox.appendChild(hsList);
 
     for (i = 0; i < highScores.length; i++) {
-        hsBox.appendChild(document.createElement("p"));
-        hsBox.children[i + 2].innerHTML = `${highScores[i].p} ➖ ${highScores[i].s}`
+        hsList.appendChild(document.createElement("p"));
+        hsList.children[i].innerHTML = `${highScores[i].p} ➖ ${highScores[i].s}`
     }
 };
 
-// The following line creates a new array of the sorted Q&As, so that the order will always be different.
+// The following line creates a new array of the sorted Q&As so that the order will always be different.
 let qandaSorted = QandAs.sort(() => Math.random() - .5);
 
 // This one calls for the interval function that runs the timer of the game.
 function countdown() {
 
     let counter = setInterval(function () {
-        // The timer changes each .01 seconds, and each execution takes away that same amount from the timer, that displays 2 decimal digits.
+        // The timer changes each .01 seconds, and each execution takes away that same amount from the timer, which displays 2 decimal digits.
         timeLeft -= .01;
         timer.innerHTML = timeLeft.toFixed(2);
 
-        // The following lines change the adds or removes a class that changes the background color to red when there are less than 5 seconds left.
+        // The following lines add or remove a class that changes the background color to red when there are less than 5 seconds left.
         if(timeLeft <= 5) {
             timerBox.classList.add("timeLow");
         } else {
             timerBox.classList.remove("timeLow");
         }
         
-        // The following, stops the timer if all the questions are answered.
-        if (questNum >= quizLength) {
+        // The following stops the timer if all the questions are answered.
+        if (questNum == quizLength) {
             clearInterval(counter);
         };
 
-        // This last part, stops the timer when it gets to 0 and calls the game ender function.
+        // This last part stops the timer when it gets to 0 and calls the game-ender function.
         // It also shows the message "TIME'S UP" by taking away the "hide" class from the HTML element.
         if(timeLeft <= 0) {
             clearInterval(counter);
@@ -280,7 +284,7 @@ function countdown() {
     }, 10);
 };
 
-// This function, adds bonus points to the score for each second left in the timer if sll the questions are answered.
+// This function adds bonus points to the score for each second left in the timer if all the questions are answered.
 function bonusFunc() {
     // The bonus base is a multiplier that changes depending on the number of correct answers by the player.
     // The more right answers, the higher the bonus multiplier will be.
@@ -330,19 +334,16 @@ const openHS = () => {
     hsLink.addEventListener("click", () => location.reload());
 };
 
-// This will again, reset the highscores by removing all the children <p> from the document and reseting the local storage with the default ROD's highscore. 
+// This will again, reset the highscores by removing all the children <p> from the document and resetting the local storage with the default ROD's highscore. 
 const resetHS = () => {
     highScores = [{ p: "ROD", s: 20000 }];
     localStorage.setItem("highscores", JSON.stringify(highScores));
+    hsList.remove();
 
-    for (i = 2; i < hsBox.children.length; i++) {
-        hsBox.children[i].remove();
-    };
-    
     renderHS();
 };
 
-// This is the game ender func, it will show and hide all the elements necesary so the the final score, the button to play again and the highscores link will be the only thing on the display.
+// This is the game ender func, it will show and hide all the elements necessary so the the final score, the button to play again, and the highscores link will be the only thing on the display.
 const gameEnd = () => {
     hsLink.classList.remove("hidden");
     scoreBox.classList.add("hide");
@@ -358,8 +359,9 @@ const gameEnd = () => {
         newHSmsg.classList.remove("hide");
     }
 
-    // This lines update the highscores and render them in the hs section.
+    //These lines update the highscores and render them in the hs section.
     setNewHS();
+    hsList.remove();
     renderHS();
 };
 
@@ -369,12 +371,12 @@ const renderQandAs = (n) => {
     
 
     for (i = 0; i < 4; i++) {
-        answer[i].innerHTML = `☛ ${qandaSorted[n].a[i].text}`
-        answer[i].dataset.truth = qandaSorted[n].a[i].correct
+        answer[i].innerHTML = `☛ ${qandaSorted[n].a[i].text}`;
+        answer[i].dataset.truth = qandaSorted[n].a[i].correct;
     };
 };
 
-// This function is called everytime a question is answered, so that you can't hover over the answers.
+// This function is called every time a question is answered so that you can't hover over the answers.
 const hoverOff = () => {
     for (i = 0; i < 4; i++) {
         answer[i].classList.remove("active");
@@ -387,7 +389,7 @@ const gameClear = () => {
     bonusFunc();
 };
 
-// The following will eavaluate the truthfullness of the answers, and it's called by a click event at each answer. 
+// The following will evaluate the truthfulness of the answers, and it's called by a click event at each answer. 
 const evaluator = (e) => {
     let attempt = e.target
     let result = attempt.dataset.truth
@@ -409,7 +411,7 @@ const evaluator = (e) => {
             answer[i].removeEventListener("click", evaluator);
         };
         
-        // This helps to animate the bonus time "+5s" that appears each time you hit the right answer. 
+        // This helps animate the bonus time "+5s" that appears each time you hit the right answer. 
         attempt.nextSibling.classList.remove("hidden");
         setTimeout(attempt.nextSibling.classList.add("hit"), 100);
         
@@ -423,14 +425,25 @@ const evaluator = (e) => {
     
         // This is what happens when you hit the wrong answer.
     } else {
+        timeLeft -= 1;
+        
         // It will display a message that it's wrong, it will change the color of the answer to red, and display the right answer in gray.
         attempt.classList.add("wrong");
         confirmFalse.classList.remove("hide");
         document.querySelector('[data-truth="true"]').classList.add("feedback");
         hoverOff();
+
+        // This helps animate the penalty of "-1s" that appears each time you hit the wrong answer. 
+        attempt.nextSibling.nextSibling.classList.remove("hidden");
+        setTimeout(attempt.nextSibling.nextSibling.classList.add("miss"), 100);
         
         for (i = 0; i < 4; i++) {
             answer[i].removeEventListener("click", evaluator);
+        };
+
+        // This bit calls to end the game after 1 second if the last question of the quiz is answered. 
+        if (questNum == quizLength) {
+            setTimeout(gameClear, 1000);
         };
 
         // Calls for the next question.
@@ -438,7 +451,7 @@ const evaluator = (e) => {
     };
 };
 
-// The most importan of this function is that it resets the properties for all the HTML elements, so that the next question can be clickable and all the animations are functional again.
+// The most important of this function is that it resets the properties for all the HTML elements so that the next question can be clickable and all the animations are functional again.
 // This also will render the next question and add the click events to each answer.
 let nextQuest = () => {
     renderQandAs(questNum);
@@ -449,10 +462,10 @@ let nextQuest = () => {
         answer[i].classList.remove("feedback");
         answer[i].addEventListener("click", evaluator);
         answer[i].classList.add("active");
-        answer[i].nextSibling.classList.remove("bonus");
         answer[i].nextSibling.classList.add("hidden");
+        answer[i].nextSibling.nextSibling.classList.add("hidden");
         answer[i].nextSibling.classList.remove("hit");
-        answer[i].nextSibling.classList.add("bonus");
+        answer[i].nextSibling.nextSibling.classList.remove("miss");
     };
 
     confirmTrue.classList.add("hide");
